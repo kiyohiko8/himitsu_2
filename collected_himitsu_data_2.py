@@ -5,8 +5,9 @@
 #collected himitsu-data by google form 
 import os, csv
 import random
-import himitsu_data_gd
+import himitsu_data_gd_2
 import pandas as pd
+import numpy as np
 
 
 #訓練データの作成	
@@ -14,6 +15,24 @@ def mk_x_train(all_word_list, word_vec, collected):
 	
 	#ユーザ毎のデータをまとめた全データ
 	x_train = []
+	
+	
+	for items in collected:
+		for j in range(4):
+			x_data = np.zeros(271, int)
+			pre_x = random.sample(items, 3)
+			for i, word in enumerate(all_word_list):
+				for item in pre_x:
+					if item == word:
+						x_data[i] = 1
+
+			x_train.append(x_data)
+					
+					
+	return x_train
+
+	
+"""
 	for items in collected:
 		#ユーザ毎のデータ
 		x_data  = []
@@ -27,7 +46,8 @@ def mk_x_train(all_word_list, word_vec, collected):
 			x_predata.sort()
 			x_train.append(x_predata)
 		
-	return x_train
+		
+"""
 	
 	
 #教師データの作成
@@ -44,6 +64,8 @@ def mk_y_train(all_word_list, collected):
 			
 		for i in range(4):
 			y_train.append(y_data)
+			
+	y_train = np.array(y_train)
 				
 	return y_train
 
@@ -78,8 +100,8 @@ if __name__ == "__main__":
 	collected = read_csv("himitsu_data_user.csv")
 	print(collected)
 	
-	himitsu  = himitsu_data_gd.mk_allword_list()
-	word_vec = himitsu_data_gd.mk_vec(himitsu)
+	himitsu  = himitsu_data_gd_2.mk_allword_list()
+	word_vec = himitsu_data_gd_2.mk_vec(himitsu)
 
 	
 	x_train  = mk_x_train(himitsu, word_vec, collected)
