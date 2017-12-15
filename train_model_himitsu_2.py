@@ -3,27 +3,27 @@ from keras.layers import Dense, Activation, Dropout
 from keras.optimizers import SGD
 from sklearn.model_selection import train_test_split
 import random
-import himitsu_data_gd
+import himitsu_data_gd_2
 import numpy as np
 import os
 import gc
 #フォームによって収集した全データのインポート
-import collected_himitsu_data
+import collected_himitsu_data_2
 
 
 """データの読み込み"""
 #全ひみつ道具データの読み込み
-himitsu  = himitsu_data_gd.mk_allword_list()
+himitsu  = himitsu_data_gd_2.mk_allword_list()
 #ひみつ道具ベクトルの作成
-word_vec = himitsu_data_gd.mk_vec(himitsu)
+word_vec = himitsu_data_gd_2.mk_vec(himitsu)
 
 
 """学習用データの整形"""
 #収集したデータの読み込み
-collected = collected_himitsu_data.read_csv("himitsu_data_user.csv")
+collected = collected_himitsu_data_2.read_csv("himitsu_data_user.csv")
 #アンケートによって収集されたデータから知っている知識のみを収集
-x_data = np.array(collected_himitsu_data.mk_x_train(himitsu, word_vec, collected))
-y_data = np.array(collected_himitsu_data.mk_y_train(himitsu, collected))
+x_data = np.array(collected_himitsu_data_2.mk_x_train(himitsu, word_vec, collected))
+y_data = np.array(collected_himitsu_data_2.mk_y_train(himitsu, collected))
 
 #訓練データの作成
 x_train, x_test, y_train, y_test =\
@@ -39,7 +39,7 @@ x_train, x_val, y_train, y_val =\
 #パラメータの設定
 epoch_num  = 25
 batch_size = 10
-in_num   = len(x_train[0]) #3
+in_num   = len(x_train[0]) #271
 hidden_1 = 2
 out_num  = len(y_train[0]) #271
 
