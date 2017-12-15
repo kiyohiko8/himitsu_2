@@ -12,7 +12,7 @@ from keras.layers import Dense, Activation, Dropout
 from keras.optimizers import SGD
 from sklearn.model_selection import train_test_split
 from keras.models import model_from_json
-import himitsu_data_gd
+import himitsu_data_gd_2
 import numpy as np
 import os
 import random
@@ -50,13 +50,18 @@ def mk_user_know(all_word_list):
 
 
 """被験者の回答から入力用データを作成"""
-def mk_input_data(wiselist, word_vec):
+def mk_input_data(wiselist, all_word_list):
 	input_data = []
-	u_data = []
-	for item in wiselist:
-		u_data.append(word_vec[item])
+	u_data = np.zeros(271, int)
 		
-	input_data.append(u_data)
+	for i, word in enumerate(all_word_list):
+		for item in wiselist:
+			if item == word:
+				u_data[i] = 1
+
+		input_data.append(u_data)
+					
+					
 	return input_data
 
 
@@ -82,13 +87,13 @@ def mk_know_dic(x, y, vec):
 if __name__ == "__main__":
 
 	#全ひみつ道具データの読み込み
-	himitsu  = himitsu_data_gd.mk_allword_list()
+	himitsu  = himitsu_data_gd_2.mk_allword_list()
 	#ひみつ道具ベクトルの作成
-	word_vec = himitsu_data_gd.mk_vec(himitsu)
+	word_vec = himitsu_data_gd_2.mk_vec(himitsu)
 	
 	#学習結果の読み込み
-	model = model_from_json(open('predict_model_himitsu_3.json').read())
-	model.load_weights('predict_weights_himitsu3.h5')
+	model = model_from_json(open('predict_model_himitsu_1.json').read())
+	model.load_weights('predict_weights_himitsu1.h5')
 	
 	#概要の出力
 	model.summary();
@@ -100,7 +105,7 @@ if __name__ == "__main__":
 		#ユーザ入力部
 		wise_list = mk_user_know(himitsu)
 		#推定器への入力用データの作成
-		input_data = mk_input_data(wise_list, word_vec)
+		input_data = mk_input_data(wise_list, himitsu)
 		#入力値を昇順にソート
 		input_data[0].sort()
 		input_data = np.array(input_data)
