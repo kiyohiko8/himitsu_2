@@ -58,8 +58,7 @@ def mk_input_data(wiselist, all_word_list):
 		for item in wiselist:
 			if item == word:
 				u_data[i] = 1
-
-		input_data.append(u_data)
+	input_data.append(u_data)
 					
 					
 	return input_data
@@ -70,9 +69,9 @@ def mk_input_data(wiselist, all_word_list):
 def mk_know_dic(x, y, vec):
 	know_dic  = {}		
 	for (j, data) in enumerate(x):
-		#0.55以上の確率だった場合は出力に渡す
+		#0.5以上の確率だった場合は出力に渡す
 		i = j + 1
-		if y[0][j] >= 0.55:
+		if y[0][j] >= 0.5:
 			for k,v in vec.items():
 				if vec[k] == i:
 					know_dic[k] = y[0][j]
@@ -92,8 +91,8 @@ if __name__ == "__main__":
 	word_vec = himitsu_data_gd_2.mk_vec(himitsu)
 	
 	#学習結果の読み込み
-	model = model_from_json(open('predict_model_himitsu_1.json').read())
-	model.load_weights('predict_weights_himitsu1.h5')
+	model = model_from_json(open('predict_model_himitsu_10.json').read())
+	model.load_weights('predict_weights_himitsu10.h5')
 	
 	#概要の出力
 	model.summary();
@@ -106,8 +105,7 @@ if __name__ == "__main__":
 		wise_list = mk_user_know(himitsu)
 		#推定器への入力用データの作成
 		input_data = mk_input_data(wise_list, himitsu)
-		#入力値を昇順にソート
-		input_data[0].sort()
+		
 		input_data = np.array(input_data)
 		print(input_data)
 	
@@ -138,6 +136,8 @@ if __name__ == "__main__":
 			
 		elif a == "n":
 			print("\n\n\nシステム作動を継続します...\n\n\n")
+			
+
 			
 	gc.collect()
 		
